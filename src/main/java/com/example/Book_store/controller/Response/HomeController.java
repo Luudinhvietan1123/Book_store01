@@ -14,4 +14,12 @@ import java.util.List;
 @RequestMapping(value = "/book_store")
 public class HomeController {
 
+    @Autowired
+    BookRepository bookRepository;
+
+    @GetMapping(value = "/home")
+    public List<Book> findAll() throws Exception{
+        List<Book> response = bookRepository.findAll();
+        return response;
+    }
 }
