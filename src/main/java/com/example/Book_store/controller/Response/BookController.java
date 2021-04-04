@@ -1,7 +1,7 @@
 package com.example.Book_store.controller.Response;
 
 import com.example.Book_store.repository.BookRepository;
-import com.example.Book_store.repository.entities.Book;
+import com.example.Book_store.repository.entities.BookEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,33 +21,33 @@ public class BookController {
     BookRepository bookRepository;
 
     @GetMapping(value = "/book_id/{book_id}")
-    public Book findAllByBookId(@PathVariable(value = "book_id") int bookId) throws Exception{
-        Book response = bookRepository.findAllByBookId(bookId);
+    public BookEntity findAllByBookId(@PathVariable(value = "book_id") int bookId) throws Exception{
+        BookEntity response = bookRepository.findAllByBookId(bookId);
         return response;
     }
 
     @GetMapping(value = "/book_genre/{book_genre}")
-    public List<Book> findAllByBookGenre(@PathVariable(value = "book_genre") String bookGenre) throws Exception{
-        List<Book> response = bookRepository.findAllByBookGenre(bookGenre);
+    public List<BookEntity> findAllByBookGenre(@PathVariable(value = "book_genre") String bookGenre) throws Exception{
+        List<BookEntity> response = bookRepository.findAllByBookGenre(bookGenre);
         return response;
     }
 
     //User page 3
     @GetMapping(value = "/user/favorite/{userId}")
-    public List<Book> findFavoriteBookByUserId(@PathVariable(name = "userId") int userId) throws Exception{
-        List<Book> response = bookRepository.findAllFavoriteBookByUserId(userId);
+    public List<BookEntity> findFavoriteBookByUserId(@PathVariable(name = "userId") int userId) throws Exception{
+        List<BookEntity> response = bookRepository.findAllFavoriteBookByUserId(userId);
         return response;
     }
 
     @GetMapping(value = "/search/{keyword}")
-    public List<Book> findAllByKeyword(@PathVariable(value = "keyword") String keyword) throws Exception{
-        List<Book> response = bookRepository.findAllByKeyword(keyword);
+    public List<BookEntity> findAllByKeyword(@PathVariable(value = "keyword") String keyword) throws Exception{
+        List<BookEntity> response = bookRepository.findAllByKeyword(keyword);
         return response;
     }
 
     @PostMapping(value = "/user_store/addBook")
-    public Book addBook(@RequestBody BookRequest request){
-        Book insertEntity = new Book();
+    public BookEntity addBook(@RequestBody BookRequest request){
+        BookEntity insertEntity = new BookEntity();
         insertEntity.setUserId(request.getUserId());
         insertEntity.setBookTitle(request.getBookTitle());
         insertEntity.setBookImage(request.getBookImage());
@@ -107,8 +107,8 @@ public class BookController {
     }
 
     @PostMapping(value = "/user_store/updateBook/{bookId}")
-    public Book updateBook(@PathVariable(name = "bookId") int bookId, @RequestBody BookRequest bookRequest) throws Exception{
-        Book update = bookRepository.findAllByBookId(bookId);
+    public BookEntity updateBook(@PathVariable(name = "bookId") int bookId, @RequestBody BookRequest bookRequest) throws Exception{
+        BookEntity update = bookRepository.findAllByBookId(bookId);
         if(update == null){
             System.out.println("Book with id = " + bookId + " is not existed!");
             return null;
@@ -127,12 +127,12 @@ public class BookController {
 
     @DeleteMapping(value = "/user_store/deleteBook/{bookId}")
     public String deleteBook(@PathVariable(name = "bookId") int bookId)throws Exception{
-        Book deleteBook = bookRepository.findAllByBookId(bookId);
-        if(deleteBook == null){
+        BookEntity deleteBookEntity = bookRepository.findAllByBookId(bookId);
+        if(deleteBookEntity == null){
             System.out.println("Book with id = " + bookId + " is not existed!");
             return null;
         }
-        bookRepository.delete(deleteBook);
+        bookRepository.delete(deleteBookEntity);
         return "Delete success!";
     }
 }
